@@ -49,7 +49,7 @@ public class UserService {
     }
 
     public LoginResponse login(LoginRequest requestDto, HttpServletResponse response) {
-        User user = validateUser(LoginRequest requestDto);
+        User user = validateUser(requestDto);
         Long userId = user.getUserId();
         UserRole role = user.getRole();
         String accessToken = jwtUtil.createToken(userId, role);
