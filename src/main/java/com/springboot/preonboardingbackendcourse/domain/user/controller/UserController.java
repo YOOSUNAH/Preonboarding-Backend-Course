@@ -26,4 +26,11 @@ public class UserController {
         return userService.signup(requestDto);
     }
 
+    @PostMapping("/login")
+    public LoginResponse login(
+        @Valid @RequestBody LoginRequest requestDto,
+        HttpServletResponse response
+    ) {
+        return userService.login(requestDto, response);
+    }
 }
