@@ -9,6 +9,7 @@ import com.springboot.preonboardingbackendcourse.domain.user.entity.User;
 import com.springboot.preonboardingbackendcourse.domain.user.entity.UserRole;
 import com.springboot.preonboardingbackendcourse.domain.user.repository.UserRepository;
 import com.springboot.preonboardingbackendcourse.global.jwt.JwtUtil;
+import com.springboot.preonboardingbackendcourse.global.jwt.RefreshTokenRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +27,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
+    @Transactional
     public SignupResponse signup(SignupRequest requestDto) {
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
@@ -42,6 +46,17 @@ public class UserService {
         return new SignupResponse(user.getUsername(), user.getNickname(), authorities);
     }
 
+    @Transactional
+    public LoginResponse login(LoginRequest requestDto, HttpServletResponse response) {
+        User user = validateUser(requestDto);
+        Long userId = user.getUserId();
+        UserRole role = user.getRole();
+
+        String accessToken = jwtUtil.generateAccessAndRefreshToken(userId, role);
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+        return new LoginResponse(accessToken);
+    }
+
     private void validateUserDuplicate(String username, String password, String nickname) {
         if (userRepository.existsByUsername(username)) {
             throw new EntityExistsException("해당 사용자가 이미 존재합니다.");
@@ -49,15 +64,6 @@ public class UserService {
         if (userRepository.existsByNickname(nickname)) {
             throw new EntityExistsException("해당 이메일이 이미 존재합니다. ");
         }
-    }
-
-    public LoginResponse login(LoginRequest requestDto, HttpServletResponse response) {
-        User user = validateUser(requestDto);
-        Long userId = user.getUserId();
-        UserRole role = user.getRole();
-        String accessToken = jwtUtil.createToken(userId, role);
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
-        return new LoginResponse(accessToken);
     }
 
     private User validateUser(LoginRequest requestDto) {
