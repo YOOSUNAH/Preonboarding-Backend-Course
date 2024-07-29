@@ -1,6 +1,5 @@
-package com.springboot.preonboardingbackendcourse.domain.user.dto;
+package com.springboot.preonboardingbackendcourse.domain.user.controller.dto.response;
 
-import com.springboot.preonboardingbackendcourse.domain.user.entity.Authority;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,4 +12,9 @@ public class SignupResponse {
     private String nickname;
     private List<Authority> authorities;
 
+    @Getter
+    @AllArgsConstructor
+    public static class Authority {
+        private String authorityName;
+    }
 }

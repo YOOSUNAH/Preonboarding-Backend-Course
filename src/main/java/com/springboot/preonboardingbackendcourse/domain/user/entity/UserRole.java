@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum UserRole {
-    USER(Authority.USER),
-    ADMIN(Authority.ADMIN);
+    USER("ROLE_USER"),
+    ADMIN("ROLE_ADMIN");
 
     private final String authority;
 
@@ -13,9 +13,7 @@ public enum UserRole {
         this.authority = authority;
     }
 
-    public static class Authority {
-
-        private static final String USER = "ROLE_USER";
-        private static final String ADMIN = "ROLE_ADMIN";
+    public static UserRole getRoleByAuthority(String authority){
+        return authority.equals(ADMIN.authority) ? UserRole.ADMIN : UserRole.USER;
     }
 }
