@@ -1,9 +1,9 @@
 package com.springboot.preonboardingbackendcourse.global.filter;
 
 import com.springboot.preonboardingbackendcourse.domain.user.entity.UserRole;
-import com.springboot.preonboardingbackendcourse.global.jwt.JwtUtil;
-import com.springboot.preonboardingbackendcourse.global.jwt.RefreshTokenRepository;
-import com.springboot.preonboardingbackendcourse.global.jwt.TokenState;
+import com.springboot.preonboardingbackendcourse.support.jwt.JwtUtil;
+import com.springboot.preonboardingbackendcourse.support.jwt.RefreshTokenRepository;
+import com.springboot.preonboardingbackendcourse.support.jwt.TokenState;
 import com.springboot.preonboardingbackendcourse.global.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -65,9 +65,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             Long userId = Long.parseLong(info.getSubject());
 
             if (refreshTokenRepository.existsByUserId(userId)) {
-                UserRole role = info.get(JwtUtil.AUTHORIZATION_KEY)
-                    .equals("ROLE_ADMIN") ? UserRole.ADMIN : UserRole.USER;
-
+                UserRole role = UserRole.getRoleByAuthority((String) info.get(JwtUtil.AUTHORIZATION_KEY));
                 String newToken = jwtUtil.regenerateAccessToken(userId, role);
                 log.info("Acces Token이 재발급되었습니다.");
                 response.addHeader(JwtUtil.AUTHORIZATION_HEADER, newToken);
@@ -85,8 +83,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private void handleValidToken(String tokenValue) {
         Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
         Long userId = Long.parseLong(info.getSubject());
-        UserRole role = info.get(JwtUtil.AUTHORIZATION_KEY)
-            .equals("ROLE_ADMIN") ? UserRole.ADMIN : UserRole.USER;
+        UserRole role = UserRole.getRoleByAuthority((String) info.get(JwtUtil.AUTHORIZATION_KEY));
         setAuthentication(userId, role);
     }
 
