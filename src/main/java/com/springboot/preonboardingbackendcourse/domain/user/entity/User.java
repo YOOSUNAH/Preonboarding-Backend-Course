@@ -33,12 +33,6 @@ public class User implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
-    public User(String username, String password, String nickname) {
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-    }
-
     public User(String username, String password, String nickname, UserRole role) {
         this.username = username;
         this.password = password;

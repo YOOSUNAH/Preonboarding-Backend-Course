@@ -26,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+
     @Transactional
     public SignupResponse signup(SignupRequest requestDto) {
         String username = requestDto.getUsername();
