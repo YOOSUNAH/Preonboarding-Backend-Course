@@ -114,7 +114,7 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-    public String regenerateAccessToken(final Long userId, final UserRole role) {;
+    public String regenerateAccessToken(final Long userId, final UserRole role) {
         return createToken(userId, UserRole.valueOf(role.getAuthority()));
     }
 

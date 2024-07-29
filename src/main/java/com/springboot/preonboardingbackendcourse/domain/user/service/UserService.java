@@ -32,7 +32,7 @@ public class UserService {
         String nickname = requestDto.getNickname();
         UserRole role = requestDto.getRole() != null ? requestDto.getRole() : UserRole.USER;
 
-        validateUserDuplicate(username, password, nickname, role);
+        validateUserDuplicate(username, password, nickname);
 
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User(username, encodedPassword, nickname, role);
@@ -42,7 +42,7 @@ public class UserService {
         return new SignupResponse(user.getUsername(), user.getNickname(), authorities);
     }
 
-    private void validateUserDuplicate(String username,String password, String nickname,UserRole role){
+    private void validateUserDuplicate(String username, String password, String nickname) {
         if (userRepository.existsByUsername(username)) {
             throw new EntityExistsException("해당 사용자가 이미 존재합니다.");
         }
@@ -60,7 +60,7 @@ public class UserService {
         return new LoginResponse(accessToken);
     }
 
-    private User validateUser(LoginRequest requestDto){
+    private User validateUser(LoginRequest requestDto) {
         User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(
             () -> new UsernameNotFoundException("해당 유저가 존재하지 않습니다."));
 
