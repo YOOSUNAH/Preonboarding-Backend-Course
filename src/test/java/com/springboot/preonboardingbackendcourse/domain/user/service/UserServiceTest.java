@@ -35,9 +35,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class UserServiceTest {
 
     @Autowired
