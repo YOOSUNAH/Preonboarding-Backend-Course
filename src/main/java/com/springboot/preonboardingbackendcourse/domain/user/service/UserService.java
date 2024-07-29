@@ -9,9 +9,12 @@ import com.springboot.preonboardingbackendcourse.domain.user.entity.User;
 import com.springboot.preonboardingbackendcourse.domain.user.entity.UserRole;
 import com.springboot.preonboardingbackendcourse.domain.user.repository.UserRepository;
 import com.springboot.preonboardingbackendcourse.global.jwt.JwtUtil;
+import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +44,10 @@ public class UserService {
 
     private void validateUserDuplicate(String username,String password, String nickname,UserRole role){
         if (userRepository.existsByUsername(username)) {
-            throw new IllegalArgumentException("해당 사용자가 이미 존재합니다.");
+            throw new EntityExistsException("해당 사용자가 이미 존재합니다.");
         }
         if (userRepository.existsByNickname(nickname)) {
-            throw new IllegalArgumentException("해당 이메일이 이미 존재합니다. ");
+            throw new EntityExistsException("해당 이메일이 이미 존재합니다. ");
         }
     }
 
@@ -59,10 +62,10 @@ public class UserService {
 
     private User validateUser(LoginRequest requestDto){
         User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(
-            () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+            () -> new UsernameNotFoundException("해당 유저가 존재하지 않습니다."));
 
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new NoSuchElementException("비밀번호가 일치하지 않습니다.");
         }
         return user;
     }
