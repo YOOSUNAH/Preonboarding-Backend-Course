@@ -1,4 +1,4 @@
-package com.springboot.preonboardingbackendcourse.domain.user.dto;
+package com.springboot.preonboardingbackendcourse.domain.user.controller.dto.request;
 
 import com.springboot.preonboardingbackendcourse.domain.user.entity.UserRole;
 import lombok.Getter;

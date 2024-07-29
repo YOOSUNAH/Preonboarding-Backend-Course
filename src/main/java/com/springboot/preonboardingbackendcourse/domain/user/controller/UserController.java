@@ -1,9 +1,9 @@
 package com.springboot.preonboardingbackendcourse.domain.user.controller;
 
-import com.springboot.preonboardingbackendcourse.domain.user.dto.LoginRequest;
-import com.springboot.preonboardingbackendcourse.domain.user.dto.LoginResponse;
-import com.springboot.preonboardingbackendcourse.domain.user.dto.SignupRequest;
-import com.springboot.preonboardingbackendcourse.domain.user.dto.SignupResponse;
+import com.springboot.preonboardingbackendcourse.domain.user.controller.dto.request.LoginRequest;
+import com.springboot.preonboardingbackendcourse.domain.user.controller.dto.response.LoginResponse;
+import com.springboot.preonboardingbackendcourse.domain.user.controller.dto.request.SignupRequest;
+import com.springboot.preonboardingbackendcourse.domain.user.controller.dto.response.SignupResponse;
 import com.springboot.preonboardingbackendcourse.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

@@ -1,4 +1,4 @@
-package com.springboot.preonboardingbackendcourse.global.jwt;
+package com.springboot.preonboardingbackendcourse.support.jwt;
 
 
 import java.util.concurrent.TimeUnit;
@@ -33,11 +33,6 @@ public class RefreshTokenRepository {
     public boolean existsByUserId(Long userId) {
         ValueOperations<String, String> valueOperations = getValueOperations();
         return Boolean.TRUE.equals(valueOperations.getOperations().hasKey(TOKEN_PREFIX + userId));
-    }
-
-    public String findByUserId(Long userId) {
-        ValueOperations<String, String> valueOperations = getValueOperations();
-        return valueOperations.get(TOKEN_PREFIX + userId);
     }
 }
 

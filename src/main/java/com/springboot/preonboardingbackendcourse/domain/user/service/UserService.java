@@ -1,15 +1,14 @@
 package com.springboot.preonboardingbackendcourse.domain.user.service;
 
-import com.springboot.preonboardingbackendcourse.domain.user.dto.LoginRequest;
-import com.springboot.preonboardingbackendcourse.domain.user.dto.LoginResponse;
-import com.springboot.preonboardingbackendcourse.domain.user.dto.SignupRequest;
-import com.springboot.preonboardingbackendcourse.domain.user.dto.SignupResponse;
-import com.springboot.preonboardingbackendcourse.domain.user.entity.Authority;
+import com.springboot.preonboardingbackendcourse.domain.user.controller.dto.request.LoginRequest;
+import com.springboot.preonboardingbackendcourse.domain.user.controller.dto.response.LoginResponse;
+import com.springboot.preonboardingbackendcourse.domain.user.controller.dto.request.SignupRequest;
+import com.springboot.preonboardingbackendcourse.domain.user.controller.dto.response.SignupResponse;
+import com.springboot.preonboardingbackendcourse.domain.user.controller.dto.response.SignupResponse.Authority;
 import com.springboot.preonboardingbackendcourse.domain.user.entity.User;
 import com.springboot.preonboardingbackendcourse.domain.user.entity.UserRole;
 import com.springboot.preonboardingbackendcourse.domain.user.repository.UserRepository;
-import com.springboot.preonboardingbackendcourse.global.jwt.JwtUtil;
-import com.springboot.preonboardingbackendcourse.global.jwt.RefreshTokenRepository;
+import com.springboot.preonboardingbackendcourse.support.jwt.JwtUtil;
 import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -27,22 +26,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
-
     @Transactional
     public SignupResponse signup(SignupRequest requestDto) {
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
         String nickname = requestDto.getNickname();
         UserRole role = requestDto.getRole() != null ? requestDto.getRole() : UserRole.USER;
-
-        validateUserDuplicate(username, password, nickname);
+        validateUserDuplicate(username, nickname);
 
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User(username, encodedPassword, nickname, role);
         userRepository.save(user);
 
-        List<Authority> authorities = List.of(new Authority(role.getAuthority()));
+        List<Authority> authorities = List.of(new SignupResponse.Authority(role.getAuthority()));
         return new SignupResponse(user.getUsername(), user.getNickname(), authorities);
     }
 
@@ -57,7 +53,7 @@ public class UserService {
         return new LoginResponse(accessToken);
     }
 
-    private void validateUserDuplicate(String username, String password, String nickname) {
+    private void validateUserDuplicate(String username, String nickname) {
         if (userRepository.existsByUsername(username)) {
             throw new EntityExistsException("해당 사용자가 이미 존재합니다.");
         }

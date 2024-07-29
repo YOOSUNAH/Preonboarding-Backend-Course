@@ -1,8 +1,4 @@
-package com.springboot.preonboardingbackendcourse.global.jwt;
-
-import static com.springboot.preonboardingbackendcourse.global.jwt.TokenState.EXPIRED;
-import static com.springboot.preonboardingbackendcourse.global.jwt.TokenState.INVALID;
-import static com.springboot.preonboardingbackendcourse.global.jwt.TokenState.VALID;
+package com.springboot.preonboardingbackendcourse.support.jwt;
 
 import com.springboot.preonboardingbackendcourse.domain.user.entity.UserRole;
 import io.jsonwebtoken.Claims;
@@ -94,31 +90,24 @@ public class JwtUtil {
 
     public TokenState validateToken(final String token) {
         if (!StringUtils.hasText(token)) {
-            return INVALID;
+            return TokenState.INVALID;
         }
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return VALID;
+            return TokenState.VALID;
         } catch (SecurityException | MalformedJwtException e) {
             log.error("유효하지 않는 JWT 서명 입니다.");
-            return INVALID;
+            return TokenState.INVALID;
         } catch (ExpiredJwtException e) {
             log.error("만료된 JWT token 입니다.");
-            return EXPIRED;
+            return TokenState.EXPIRED;
         } catch (UnsupportedJwtException e) {
             log.error("지원되지 않는 JWT 토큰 입니다.");
-            return INVALID;
+            return TokenState.INVALID;
         } catch (IllegalArgumentException e) {
             log.error("잘못된 JWT 토큰 입니다.");
-            return INVALID;
+            return TokenState.INVALID;
         }
-    }
-
-    public String getTokenWithoutBearer(String bearerToken) {
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
     }
 
     public Claims getUserInfoFromExpiredToken(final String token) {

@@ -25,7 +25,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setForUserDetails(userId, role);
         return new UserDetailsImpl(user);
     }
-
-    public void setLoginUserByToken(String token) {
-    }
 }

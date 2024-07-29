@@ -1,8 +1,8 @@
 package com.springboot.preonboardingbackendcourse.global.config;
 
 import com.springboot.preonboardingbackendcourse.global.filter.JwtAuthorizationFilter;
-import com.springboot.preonboardingbackendcourse.global.jwt.JwtUtil;
-import com.springboot.preonboardingbackendcourse.global.jwt.RefreshTokenRepository;
+import com.springboot.preonboardingbackendcourse.support.jwt.JwtUtil;
+import com.springboot.preonboardingbackendcourse.support.jwt.RefreshTokenRepository;
 import com.springboot.preonboardingbackendcourse.global.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -39,7 +39,6 @@ public class WebSecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
         return new JwtAuthorizationFilter(jwtUtil, userDetailsService, refreshTokenRepository);
@@ -63,9 +62,7 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated()
         );
 
-        // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 }

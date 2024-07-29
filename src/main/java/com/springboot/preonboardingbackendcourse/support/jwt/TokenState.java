@@ -1,4 +1,4 @@
-package com.springboot.preonboardingbackendcourse.global.jwt;
+package com.springboot.preonboardingbackendcourse.support.jwt;
 
 public enum TokenState {
     VALID,
