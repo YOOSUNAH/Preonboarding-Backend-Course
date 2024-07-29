@@ -1,5 +1,4 @@
-package com.springboot.preonboardingbackendcourse.global.Exception;
-
+package com.springboot.preonboardingbackendcourse.global.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.NoSuchElementException;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionController {
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ExceptionDto> handBadRequestException(Exception e) {
+    public ResponseEntity<ExceptionDto> handBadRequestException(IllegalArgumentException e) {
         return createResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
@@ -27,10 +26,10 @@ public class ExceptionController {
         return createResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
-
-
-    private ResponseEntity<ExceptionDto> createResponse(HttpStatus status, String message) {
-        return ExceptionDto.of(status, message);
+    private ResponseEntity<ExceptionDto> createResponse(
+        HttpStatus status,
+        String message
+    ) {
+        return ExceptionDto.errorMessage(status, message);
     }
-
 }

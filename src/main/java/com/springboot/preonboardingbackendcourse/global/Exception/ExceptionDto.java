@@ -1,4 +1,4 @@
-package com.springboot.preonboardingbackendcourse.global.Exception;
+package com.springboot.preonboardingbackendcourse.global.exception;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ public class ExceptionDto {
 
     private String message;
 
-    public static ResponseEntity<ExceptionDto> of(
+    public static ResponseEntity<ExceptionDto> errorMessage(
         HttpStatus status, String message
     ) {
         return ResponseEntity.status(status).body(new ExceptionDto(message));
