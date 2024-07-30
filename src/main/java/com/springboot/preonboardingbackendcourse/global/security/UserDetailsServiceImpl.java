@@ -23,7 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         throws UsernameNotFoundException {
         User user = new User();
         user.setForUserDetails(userId, role);
-        log.info("#### getUserDetails");
         return new UserDetailsImpl(user);
     }
 }

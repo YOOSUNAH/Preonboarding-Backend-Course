@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: Preonboarding-Backend-Course
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/login
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+
+jwt:
+  secret:
+    key: ${jwt.secret.key}
+
+logging:
+  level:
+    com:
+      springboot:
+        preonboardingbackendcourse:
+          global:
+            filter:
+              JwtAuthorizationFilter: DEBUG
