@@ -35,15 +35,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String requestURI = request.getRequestURI();
-        if (requestURI.equals("/v1/signupPage") || requestURI.equals("/v1/loginPage")) {
-            log.info("#### doFilter");
-            filterChain.doFilter(request, response);
-            log.info("#### doFilter 후");
-            return;
-        }
-
-
         String tokenValue = jwtUtil.getJwtFromHeader(request);
         if (tokenValue == null) {
             filterChain.doFilter(request, response);
