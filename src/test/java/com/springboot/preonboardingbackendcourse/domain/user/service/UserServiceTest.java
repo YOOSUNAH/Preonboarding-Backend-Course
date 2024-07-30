@@ -25,11 +25,10 @@ import com.springboot.preonboardingbackendcourse.domain.user.repository.UserRepo
 import com.springboot.preonboardingbackendcourse.support.jwt.JwtUtil;
 import jakarta.persistence.EntityExistsException;
 import java.util.NoSuchElementException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -57,13 +56,17 @@ class UserServiceTest {
     @DisplayName("회원 가입 관련 테스트")
     class SignUpTest {
 
+        @BeforeEach
+        void setUp() {
+            userRepository.deleteAll();
+        }
+
+
         @DisplayName("회원 가입 V1")
         @Test
         void signup() {
-            // given
-            userRepository.deleteAll();
             // when
-            SignupResponse response = userService.signup(SIGNUP_REQUEST_DTO);
+            userService.signup(SIGNUP_REQUEST_DTO);
             // then
             User savedUser = userRepository.findByUsername(SIGNUP_REQUEST_DTO.getUsername())
                 .orElse(null);
@@ -78,8 +81,6 @@ class UserServiceTest {
         @DisplayName("회원 가입 V2")
         @Test
         void signup2() {
-            // given
-            userRepository.deleteAll();
             // when
             assertDoesNotThrow(
                 () -> userService.signup(SIGNUP_REQUEST_DTO)
@@ -123,6 +124,11 @@ class UserServiceTest {
     @Nested
     @DisplayName("로그인 관련 테스트")
     class LoginTest {
+
+        @BeforeEach
+        void setUp() {
+            userRepository.deleteAll();
+        }
 
         @DisplayName("로그인")
         @Test
