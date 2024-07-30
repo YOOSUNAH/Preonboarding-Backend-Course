@@ -48,11 +48,13 @@ public class JwtUtil {
     public String generateAccessAndRefreshToken(final Long userId, final UserRole role) {
         String accessToken = generateAccessToken(userId, role.getAuthority());
         generateRefreshToken(userId, role.getAuthority());
-        return accessToken;  // AccessToken 만 return
+        log.info("#### generateAccessAndRefreshToken");
+        return accessToken;
     }
 
     public String generateAccessToken(final Long userId, final String role) {
         Date date = new Date();
+        log.info("#### generateAccessToken");
 
         return BEARER_PREFIX +
             Jwts.builder()
@@ -67,7 +69,7 @@ public class JwtUtil {
     @Transactional
     public void generateRefreshToken(final Long userId, final String role) {
         Date date = new Date();
-
+        log.info("#### generateRefreshToken");
         String refreshToken = BEARER_PREFIX +
             Jwts.builder()
                 .setSubject(userId.toString())
@@ -82,6 +84,8 @@ public class JwtUtil {
 
     public String getJwtFromHeader(HttpServletRequest httpServletRequest) {
         String bearerToken = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
+        log.info("#### bearerToken");
+
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(BEARER_PREFIX_LENGTH);
         }
@@ -90,13 +94,16 @@ public class JwtUtil {
 
     public TokenState validateToken(final String token) {
         if (!StringUtils.hasText(token)) {
+            log.info("#### INVALID");
             return TokenState.INVALID;
         }
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            log.info("#### VALID");
             return TokenState.VALID;
         } catch (SecurityException | MalformedJwtException e) {
             log.error("유효하지 않는 JWT 서명 입니다.");
+            log.info("#### INVALID");
             return TokenState.INVALID;
         } catch (ExpiredJwtException e) {
             log.error("만료된 JWT token 입니다.");
@@ -113,6 +120,7 @@ public class JwtUtil {
     public Claims getUserInfoFromExpiredToken(final String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            log.info("#### getUserInfoFromExpiredToken");
             return null;
         } catch (ExpiredJwtException e) {
             return e.getClaims();
@@ -120,10 +128,12 @@ public class JwtUtil {
     }
 
     public Claims getUserInfoFromToken(final String token) {
+        log.info("#### getUserInfoFromToken");
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
     public String regenerateAccessToken(final Long userId, final UserRole role) {
+        log.info("#### regenerateAccessToken");
         return generateAccessToken(userId, role.getAuthority());
     }
 

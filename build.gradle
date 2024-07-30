@@ -47,14 +47,12 @@ dependencies {
 
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'org.redisson:redisson-spring-boot-starter:3.27.1'
-    implementation 'org.springframework.data:spring-data-redis:2.7.5'
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testCompileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    testImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
     testRuntimeOnly 'com.h2database:h2'
 }
 

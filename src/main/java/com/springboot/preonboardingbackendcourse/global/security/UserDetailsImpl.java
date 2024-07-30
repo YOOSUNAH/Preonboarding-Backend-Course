@@ -4,10 +4,12 @@ import com.springboot.preonboardingbackendcourse.domain.user.entity.User;
 import com.springboot.preonboardingbackendcourse.domain.user.entity.UserRole;
 import java.util.ArrayList;
 import java.util.Collection;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@Slf4j
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
@@ -37,6 +39,7 @@ public class UserDetailsImpl implements UserDetails {
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(simpleGrantedAuthority);
+        log.info("#### getAuthorities");
         return authorities;
     }
 
