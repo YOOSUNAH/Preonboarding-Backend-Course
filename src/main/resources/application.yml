@@ -3,8 +3,8 @@ spring:
     name: Preonboarding-Backend-Course
 
   datasource:
-    url: jdbc:mysql://${db.url}/${db.name}
-    username: ${db.username}
+    url: jdbc:mysql://${db.url}:3306/mydb
+    username: admin
     password: ${db.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
@@ -29,7 +29,7 @@ spring:
 
 jwt:
   secret:
-    key: ${jwt.secret.key}
+    key: 7Iqk7YyM66W07YOA7L2U65Sp7YG0657Iqk7YyM66W07YOA7L2U65Sp7YG065
 
 logging:
   level:
