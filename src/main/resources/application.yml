@@ -40,3 +40,36 @@ logging:
           global:
             filter:
               JwtAuthorizationFilter: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    url: jdbc:h2:mem:testdb
+    password: ''
+
+  data:
+    redis:
+      port: 6379
+      host: localhost
+
+  application:
+    name: Preonboarding-Backend-Course
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+jwt:
+  secret:
+    key: 7Iqk7YyM66W07YOA7L2U65Sp7YG0657Iqk7YyM66W07YOA7L2U65Sp7YG065
