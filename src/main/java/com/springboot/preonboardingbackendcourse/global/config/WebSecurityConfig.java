@@ -63,6 +63,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/v1/homePage").permitAll()
                 .requestMatchers("/v1/signupPage").permitAll()
                 .requestMatchers("/v1/loginPage").permitAll()
+                .requestMatchers("**/8080").permitAll()
                 .anyRequest().authenticated()
         );
 
